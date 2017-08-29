@@ -31,7 +31,8 @@ tr {
   border: 16px black solid; }
 
 .name {
-  text-align: center; }
+  text-align: center;
+  font-size: 50px; }
 
 .characterRow {
   margin-bottom: 30px; }
@@ -55,5 +56,26 @@ tbody {
 
 .getDetails {
   color: black; }
+
+.modal {
+  font-family: 'Bangers', sans-serif; }
+  .modal .modal-content {
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-position: top right;
+    height: 100%; }
+  .modal .modal-header, .modal .modal-footer {
+    border: none; }
+  .modal .modal-body h2, .modal .modal-title h2 {
+    width: 55%;
+    font-size: 40px; }
+  .modal .modal-body h3, .modal .modal-title h3 {
+    width: 55%;
+    font-size: 30px; }
+  .modal .modal-body h4, .modal .modal-body p, .modal .modal-title h4, .modal .modal-title p {
+    width: 55%;
+    font-size: 20px; }
+  .modal .modal-body .btn, .modal .modal-title .btn {
+    text-align: left; }
 
 /*# sourceMappingURL=styles.css.map */

@@ -40,6 +40,7 @@ tr {
 
 .name {
 text-align: center;
+font-size: 50px;
 }
 
 .characterRow {
@@ -69,4 +70,38 @@ tbody {
 
 .getDetails {
   color: black;
+}
+
+.modal {
+  font-family: 'Bangers', sans-serif;
+
+  .modal-content {
+    background-image: url("../images/background.jpg");
+    background-repeat: no-repeat;
+    background-position: top right;
+    height: 100%;
+  }
+  .modal-header, .modal-footer{
+    border: none;
+  }
+  .modal-body, .modal-title {
+    h2 {
+      width: 55%;
+      font-size: 40px;
+
+    }
+    h3 {
+      width: 55%;
+      font-size: 30px;
+    }
+
+    h4, p {
+      width: 55%;
+      font-size: 20px;
+    }
+
+    .btn {
+      text-align: left;
+    }
+  }
 }

@@ -4,10 +4,10 @@ let charName, charImg, tempImg;
 let userInput = $("#userInput");
 let apiKey = apikey="ts=1&apikey=8c341eb8a8058fa06e30e3cd5c608bc2&hash=ee5c3bb981328e44a00878da4bad4323"
 let apiUrl = "http://gateway.marvel.com/v1/public/characters?ts=1&apikey=8c341eb8a8058fa06e30e3cd5c608bc2&hash=ee5c3bb981328e44a00878da4bad4323&limit=100"
-//let eventUrl = "https://gateway.marvel.com:443/v1/public/characters/"+characterID+"/events?"+ apiKey
 let details = $('#getDetails');
-let characters, tempEventUrl, characterID;
-
+let characters, tempEventUrl, characterID, searchUrl;
+// $('#my-modal').modal({
+//     show: 'false'})
 
 
 
@@ -30,47 +30,55 @@ getCharacters(apiUrl);
           }//end getCharacters
 
             userInput.click(function(){
-              $("tbody").html("");
-              userInput = $(".form-control").val();
-              let searchUrl = apiUrl + "&nameStartsWith=" + userInput;
-              getCharacters(searchUrl);
+                      if($(".form-control").val()!="")
+                      {
+                                $("tbody").html("");
+                                userInput = $(".form-control").val();
+                                searchUrl = apiUrl + "&nameStartsWith=" + userInput;
+                                getCharacters(searchUrl);
+                      }else {
+                               getCharacters(apiUrl);
+                      }
+
             })
 
+            function Event(name, description, heroes, heroesRet) {
+              this.name=name;
+              this.description=description;
+              this.heroes=heroes;
+              this.heroesRet=heroesRet;
+            }
+
             $(document).on('click', '.getDetails' , function() {
-                      console.log(cleanAnswer($(this).attr("data-target")));
-                      console.log($(this).attr("data-img"));
-                      console.log($(this).attr("data-id"));
+                    let characterName = $(this).attr("data-target");
                       charID = $(this).attr("data-id");
-                      let imgUrl = apiUrl + "&name=" + cleanAnswer($(this).attr("data-target"));
-                      console.log(imgUrl);
-                      $.get(imgUrl, function(data) {
-                                characters = data.data.results;
-                                console.log(characters);
-                                charName = characters[0].name;
-                                console.log(charName);
-                                charImg = '<img src="'+ characters[0].thumbnail.path+"/standard_fantastic."+characters[0].thumbnail.extension+'" />';
-                                console.log(charImg);
-                                charEvents = characters[0].events.items//[0].name;
-                                console.log(charEvents);
-                                test = charEvents[1].name;
-                                console.log(test);
-                                tempEventUrl="https://gateway.marvel.com/v1/public/characters/"+charID+"/events?"+ apiKey
-                                console.log(tempEventUrl);
-                                console.log("made it here")
+                      //get event desc
+                      tempEventUrl="http://gateway.marvel.com/v1/public/characters/"+charID+"/events?"+ apiKey
+                      characterImage = $(this).attr("data-img");
 
-
-                                //let charEvents =
+                      $.get(tempEventUrl, function(data) {
+                                let events = data.data.results;
+                                let eventCount=(events.length);
+                                if(eventCount>=5){
+                                          $('.modal-body').html("");
+                                          for(let i = 0; i < 5; i++){
+                                                  $('#modalTitle').html(characterName);
+                                                  $('.modal-body').append('<h3 class="eventName">'+events[i].title+'</h3><h4 class="eventDesc">'+events[i].description+'</h4><p class="heroes">Number of Characters in Event: '+events[i].characters.available+'</p><p class="returned">Characters that Survived Event: '+events[i].characters.returned+'</p>');
+                                          }//end for loop
+                                          $('.modal-content').css('background-image', 'url('+characterImage+')');
+                                }else{
+                                          $('.modal-body').html("");
+                                          $('#modalTitle').html(characterName);
+                                          $('.modal-body').html('<h2 class="eventName">There are no events for this character</h2>');
+                                          console.log(characterImage);
+                                          $('.modal-content').css('background-image', 'url('+characterImage+')');
+                                          //$('body').css('background-image', 'url(../images/backgrounds/header-top.jpg)');
+                                }
+                                $('#my-modal').modal({
+                                    show: 'true'
+                                });
                       })
 
-                      $.get(tempEventUrl), function(eventData) {
-                                console.log("made it the next step")
-                                eventDesc = eventData.data.results.description;
-                                console.log(eventDesc);
-                                characterDesc = eventData.data.results.characters.available;
-                                console.log(characterDesc);
-                                characterRet = eventData.data.results.characters.returned;
-                                console.log(characterRet);
-                      }
 
                 }) ;
 
@@ -78,6 +86,8 @@ getCharacters(apiUrl);
                       tempAnswer=tempAnswer.replace(/<(?:.|\n\i)*?>/gm, '');
                       return tempAnswer;
                     }
+
+
 
 })//end of function that will only run after page has loaded
 })()
