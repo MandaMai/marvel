@@ -30,14 +30,21 @@ getCharacters(apiUrl);
           }//end getCharacters
 
             userInput.click(function(){
-                      if($(".form-control").val()!="")
+                      //console.log("value: "+$("#input").val());
+                      if($("#input").val()=='')
                       {
+                                //console.log("reset")
                                 $("tbody").html("");
-                                userInput = $(".form-control").val();
+                                 getCharacters(apiUrl);
+
+                      }else {
+                                console.log("running main search")
+                                $("tbody").html("");
+                                userInput = $("#input").val();
                                 searchUrl = apiUrl + "&nameStartsWith=" + userInput;
                                 getCharacters(searchUrl);
-                      }else {
-                               getCharacters(apiUrl);
+                                $("#input").val('');
+
                       }
 
             })
